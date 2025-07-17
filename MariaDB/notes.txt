@@ -1,0 +1,52 @@
+1. Environment Setup
+    MariaDB Server
+    MySQL Workbench
+
+2. What is MariaDB
+
+3. Creating database and table
+
+    database
+        tables
+            columns and rows
+
+    table - relation
+    row - record
+    column - attribute
+
+4. Constraints
+    primary key
+        unique
+        not null
+    auto_increment
+    unique
+    not null
+    default (current_timestamp)
+
+4. Create (CRUD)
+    insert - one record
+    insert - multiple record
+
+5. Read (CRUD)
+    select
+    where
+
+6. Update (CRUD)
+    update - single column for a specific record
+    update - multiple columns for a specific record 
+    update - all records (without where clause)
+    (with SET)
+
+7. Delete (CRUD)
+    delete - single and multiple records
+    delete - all records (without where)
+
+
+
+
+
+Disable Safe Update Mode:
+SET SQL_SAFE_UPDATES = 0;
+
+
+
