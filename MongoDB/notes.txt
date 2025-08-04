@@ -1,0 +1,400 @@
+MongoDB
+------------------------
+installation
+intro to mongodb
+create & delete db
+create & delete collection
+CRUD - documents
+    create
+    read
+    update
+    delete
+
+Installation
+-------------
+1. server
+2. mongodb shell
+3. compass - optional
+4. vscode extension for mongodb - optional
+
+
+
+Intro to MongoDB
+----------------
+- NoSQL database
+- key-value pairs
+
+key features:
+    - document oriented
+    - scalability
+    - schema-flexibility
+    - indexing
+    - aggregation
+
+
+table  ->  collection
+columns  ->  fields
+rows  ->  documents
+
+
+
+when to use sql and when to use mongodb
+---------------------------------------
+
+
+
+
+
+JSON vs BSON
+-------------
+
+BSON
+Binary Representation of JSON
+    - to efficiently store documents
+    - size -> less
+    - speed -> more
+    - supports additional datatypes:
+        date
+        object_id
+
+{
+    "name": "Rahul",
+    "age": 26,
+    "city": "Pune"
+}
+
+
+mongodb://localhost:27017
+
+
+
+
+
+mongosh
+
+show databases;
+show dbs;
+
+to check current database
+db;
+
+to create or select a db
+use <db_name>;
+use julydb;
+
+to create collection
+db.createCollection("users");
+
+to delete db
+db.dropDatabase();
+
+to delete collection
+db.users.drop();
+
+
+
+CRUD
+----
+1. insert
+to add single document
+db.users.insertOne({name: "Jay", age: 27});
+you can write with quotes too
+
+to add multiple documents
+db.users.insertmany([{}, {}, {}]);
+
+
+2. update
+to update single doc
+db.users.updateOne(filter, update);
+db.users.updateOne({name: "Jay"}, {$set: {age: 30}});
+
+if filed does not exist, it adds a new one
+
+to add new document in case of filter which doesn't exist
+db.users.updateOne({}, {}, {upsert: true})
+
+
+Read:
+
+db.products.insertMany([
+  { name: "Laptop", brand: "Dell", price: 800, stock: 50, categories: ["Electronics", "Computers"] },
+  { name: "Smartphone", brand: "Apple", price: 1000, stock: 30, categories: ["Electronics", "Mobile"] },
+  { name: "TV", brand: "Samsung", price: 600, stock: 20, categories: ["Electronics", "Home Appliances"] },
+  { name: "Headphones", brand: "Sony", price: 200, stock: 100, categories: ["Electronics", "Accessories"] },
+  { name: "Refrigerator", brand: "LG", price: 1200, stock: 10, categories: ["Home Appliances"] }
+]);
+
+show collections;
+
+db.products.find();
+
+db.products.find({}, {name: 1, price: 1});
+
+db.products.find({}, {name: 1, price: 1, _id: 0});
+
+db.products.find({}, {stock: 0});
+
+db.products.find({brand: "Sony"});
+
+db.products.find({price: {$gt: 500}});
+
+db.products.find({price: {$gte: 500, $lte: 1000}});
+
+db.products.find({$or: [{brand: "Apple"}, {brand: "Sony"}]});
+
+db.products.find({$and: [{price: {$gte: 600}}, {stock: {$lte: 50}}]});
+
+db.products.find().sort({price: 1});
+
+db.products.find().sort({price: 0});
+
+
+
+db.products.find().limit(3);
+
+db.products.find().skip(2);
+db.products.find().skip(1).limit(2);
+
+db.products.countDocuments();
+
+db.products.countDocuments({price: {$gte: 500}});
+
+
+
+db.products.find({name: {$regex: /^S/}});
+
+db.products.find({brand: {$regex: /lg/i}});
+
+
+db.products.drop();
+
+
+Delete:
+
+db.products.insertMany([
+  { name: "Laptop", brand: "Dell", price: 800, stock: 50 },
+  { name: "Smartphone", brand: "Apple", price: 1000, stock: 30 },
+  { name: "TV", brand: "Samsung", price: 600, stock: 20 },
+  { name: "Headphones", brand: "Sony", price: 200, stock: 100 },
+  { name: "Refrigerator", brand: "LG", price: 1200, stock: 10 }
+]);
+
+db.products.find();
+
+
+
+db.products.deleteOne({brand: "Apple"});
+
+db.products.deleteMany({price: {$lt: 500}});
+
+db.products.deleteMany({});
+
+db.products.deleteMany({$or: [{brand: "Sony"}, {stock: {$lt: 20}}]});
+
+db.products.deleteMany($and: [{price: {$gt: 500}}, {stock: {$lt: 50}}]);
+
+db.products.deleteMany({name: {$regex: /^L/}});
+
+db.products.find();
+
+
+
+
+working with arrays and objects
+--------------------------------
+db.students.insertOne({name: "Vivek Sharma", age: 23, subjects: ["History", "Economics"], address: {city: "Mumbai", state: "Maharashtra"}});
+
+db.students.updateOne({name: "Rahul Verma"}, {$push: {subjects: "Geography"}});
+
+db.students.updateOne({name: "Anjali Singh"}, {$push: {subjects: {$each: ["Psycology", "Sociology"]}}});
+
+db.students.find({"address.state": "Rajasthan"});
+
+db.students.find({age: {$gt: 20}});
+
+db.students.find({subjects: "Math"});
+
+db.students.updateOne({name: "Aman Khan"}, {$set: {age: 20}});
+
+db.students.updateOne({name: "Vivek Sharma"}, {$set: {"address.city": "Pune"}});
+
+db.students.updateOne({name: "Vivek Sharma"}, {$pull: {subjects: "Economics"}});
+
+db.students.updateMany({}, {$unset: {"address.state": ""}});
+
+
+
+
+
+indexing
+-----------------
+
+searching
+sorting
+
+{
+  {name: "Amit", age: 25},
+  {name: "Neha", age: 22},
+  {name: "Pratik", age: 26},
+  {name: "Jay", age: 24}
+}
+
+db.person.find({name: "Jay"});
+
+name -> index
+it can directly give you the result
+
+NOTE: mongodb automatically creates an index on _id
+
+creating an index:
+db.users.createIndex({name: 1});
+
+view all indexes:
+db.users.getIndexes();
+
+drop an index:
+db.users.dropIndex({age: 1});
+
+drop all indexes:
+db.users.dropIndexes();
+
+
+pros:
+faster queries, optimized sorting
+
+cons:
+increased storage size, slower writes
+
+jay
+neha
+ajay
+aditya
+ajinkya
+anjali
+komal
+
+
+
+1 or -1
+
+1 => ascending order (from smallest to largest or from A to Z)
+-1 => descending order (from largest to smallest or from Z to A)
+
+{
+  {name: "Amit", age: 25},
+  {name: "Neha", age: 22},
+  {name: "Pratik", age: 26},
+  {name: "Jay", age: 24}
+}
+
+db.students.createIndex({age: 1});
+22, 24, 25, 26
+
+db.students.createIndex({age: -1});
+26, 25, 24, 22
+
+
+
+Types of indexes:
+-----------------------
+1. single field index
+index on one specific field in mongodb collection
+
+2. compound index
+index on multiple fields
+combinarion of fields
+query using multiple fields together
+
+db.students.createIndex({name: 1, age: 1});
+db.students.find({name: "Jay", age: 26});
+
+3. multikey index
+can be used when you have arrays in your documents
+since an array can contain multiple values, a multikey index allows mongodb to create an index on each elems rather than whole array
+
+db.students.createIndex({subjects: 1});
+
+db.students.find({subjects: "Math"});
+
+
+
+
+aggregation pipeline
+-------------------------
+map().filter().reduce()
+
+process data
+transform data
+
+stage (operations - filtering, sorting, grouping or calculating)
+
+common aggregation stages:
+$match: filter documents (like find)
+$project: select specific fileds
+$group: group documents and performs calculations (like sum, avg)
+$sort: sort documents by specific fields
+$limit: limit the number of documents
+$skip: skips a specified number of documents
+$unwind: break array into multiple documents
+
+db.employees.aggregate(operations);
+
+
+1. find employees in the IT department
+db.employees.aggregate([{$match: {department: "IT"}}]);
+
+2. show only the names and salaries of employees
+db.employees.aggregate([{$project: {name: 1, salary: 1, _id: 0}}]);
+
+3. find the total salary paid to employees in each department
+db.employees.aggregate([{$group: {_id: "$department", totalSalary: {$sum: "$salary"}}}]);
+
+4. sort employees by their salaries in descending order
+db.employees.aggregate([{$sort: {salary: -1}}]);
+
+5. get the top 3 highest paid employees
+db.employees.aggregate([{$sort: {salary: -1}}, {$limit: 3}]);
+
+6. employees after skipping first 2
+db.employees.aggregate([{$skip: 2}]);
+
+7. list each skill of employees as a separate document
+db.employees.aggregate([{$unwind: "$skills"}]);
+
+8. add a new field annualSalary to show yearly income
+$multiply
+
+9. find the total number of unique skills across all employees
+$count
+
+
+
+backup and restore
+import and export
+intro to web apis
+
+
+
+mongodump
+mongorestore
+mongoexport
+mongoimport
+
+
+mongodump
+mongodump --out backupData
+mongodump -d sampledb --out sampledbfold
+
+mongorestore
+mongorestore sampledbfold
+
+mongodump -d sampledb -c users --out userColl
+mongorestore --nsInclude sampledb.users userColl
+
+mongoexport --db sampledb --collection users --out data.json
+mongoimport --db sampledb --collection users --file data.json
+
+
+
+

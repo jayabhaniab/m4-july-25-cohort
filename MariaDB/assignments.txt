@@ -1,0 +1,76 @@
+assignment - 1
+----------------------
+Scenario: New Hire
+An HR manager needs to add a new employee record for a recent hire.
+
+Query: Insert a new record for the new hire named "Sneha Patil," who is 24 years old and works in the Marketing department with a salary of 45,000.
+
+insert into employees (name, age, department, salary)
+values ('Sneha Patil', 24, 'Marketing', 45000);
+
+
+
+Scenario: Employee Promotion
+An employee, "Arjun Verma," has been promoted, and his salary needs to be updated.
+Query: Update Arjun Verma’s salary to 75,000 and his age to 27.
+
+update employees
+set salary = 75000, age = 27
+where name = 'Arjun Verma';
+
+
+
+
+Scenario: Department Restructuring
+Due to departmental restructuring, all employees in the Finance department need their department changed to "Finance & Accounting."
+Query: Update the department for all employees currently in the Finance department.
+
+update employees
+set department = 'Finance & Accounting'
+where department = "Finance";
+
+
+
+
+Scenario: Employee Departure
+An employee named "Krishna Iyer" has decided to leave the company, and their record needs to be deleted.
+Query: Delete the record for Krishna Iyer.
+
+delete from employees
+where name = "Krishna Iyer";
+
+
+
+
+Scenario: Multiple Departures
+The company is downsizing, and all employees in the HR department are being laid off.
+Query: Delete all records of employees in the HR department.
+
+delete from employees
+where department = 'HR';
+
+
+
+
+Scenario 7: Retrieving Employee Information
+The manager wants to view the details of all employees who are older than 30.
+Query: Select all records for employees older than 30.
+
+select * from employees
+where age > 30;
+
+
+
+
+Scenario: High Salary Review
+The finance team wants to review the details of employees earning more than 70,000.
+Query: Select all records of employees with a salary greater than 70,000.
+
+select * from employees
+where salary > 70000;
+
+
+
+
+
+

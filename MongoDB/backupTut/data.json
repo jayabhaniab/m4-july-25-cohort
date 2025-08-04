@@ -1,0 +1,4 @@
+{"_id":{"$oid":"673ca5302749988e27e7d6c7"},"name":"Jay","age":25,"city":"Pune"}
+{"_id":{"$oid":"673ca2e290ec35b50fcc898a"},"name":"Charlie","age":37,"city":"Chicago","hobbies":["music","traveling"]}
+{"_id":{"$oid":"673ca2e290ec35b50fcc8988"},"name":"Alice","age":27,"city":"New York","hobbies":["reading","gaming"],"occupation":"Software Developer","isActive":true}
+{"_id":{"$oid":"673ca2e290ec35b50fcc8989"},"name":"Bob","age":32,"city":"Los Angeles","hobbies":["sports","coding"]}

@@ -1,0 +1,266 @@
+mongosh;
+
+show databases;
+show dbs;
+
+use mydb;
+
+db.createCollection("users");
+
+db
+
+db.dropDatabase()
+
+db.createCollection('users');
+
+show collections
+
+db.users.drop()
+
+
+db.users
+db.getCollection('users')
+
+
+
+CRUD
+-----------
+1. insert
+single doc:
+db.users.insertOne({name: "Jay", age: 25, city: "Pune"});
+db.users.insertOne({"name": "Jay", "age": 25, "city": "Pune"});
+
+db.products.insertMany([{name: "laptop", price: 500, brand: "Dell"}, {name: "phone", price: 500, brand: "apple"}, {}]);
+
+db.users.insertOne({name: "Rahul", age: 30, address: {street: "street 4", city: "Mumbai"}, hobbies: ["reading", "sports"]});
+
+
+
+db.users.insertMany([
+  { name: "Alice", age: 25, city: "New York", hobbies: ["reading", "gaming"] },
+  { name: "Bob", age: 30, city: "Los Angeles", hobbies: ["sports", "coding"] },
+  { name: "Charlie", age: 35, city: "Chicago", hobbies: ["music", "traveling"] }
+]);
+
+
+2. update
+db.users.uodateOne(filter, update);
+
+db.users.updateOne({name: "Rahul"}, {$set: {age: 30}});
+
+db.users.updateOne({name: "neha"}, {$inc: {age: 1}});
+
+db.users.updateOne({name: "Rahul"},  {$set: {email: "rahul@email.com"}});
+
+db.users.updateOne({name: "Jatin"}, {$set: {age: 19}}, {upsert: true});
+
+
+
+
+
+use julydb2;
+db.users.insertMany([
+  { name: "Alice", age: 25, city: "New York", hobbies: ["reading", "gaming"] },
+  { name: "Bob", age: 30, city: "Los Angeles", hobbies: ["sports", "coding"] },
+  { name: "Charlie", age: 35, city: "Chicago", hobbies: ["music", "traveling"] }
+]);
+
+db.users.find();
+
+db.users.updateOne({nane: "Alice"}, {$set: {age: 26}});
+
+db.usres.updateOne({name: "Alice"}, {$inc: {age: 1}});
+
+db.users.updateOne({name: "Alice"}, {$set: {occupation: "Software Developer"}});
+
+db.users.updateOne({name: "Jay"}, {$set: {age: 25, city: "Pune"}}, {upsert: true});
+
+db.users.updateMany({city: "New York"}, {$set: {isActive: true}});
+
+db.users.updateMany({age: {$gte: 30}}, {$inc: {age: 2}});
+
+ 
+
+
+Read:
+
+db.products.insertMany([
+  { name: "Laptop", brand: "Dell", price: 800, stock: 50, categories: ["Electronics", "Computers"] },
+  { name: "Smartphone", brand: "Apple", price: 1000, stock: 30, categories: ["Electronics", "Mobile"] },
+  { name: "TV", brand: "Samsung", price: 600, stock: 20, categories: ["Electronics", "Home Appliances"] },
+  { name: "Headphones", brand: "Sony", price: 200, stock: 100, categories: ["Electronics", "Accessories"] },
+  { name: "Refrigerator", brand: "LG", price: 1200, stock: 10, categories: ["Home Appliances"] }
+]);
+
+show collections;
+
+db.products.find();
+
+db.products.find({}, {name: 1, price: 1});
+
+db.products.find({}, {name: 1, price: 1, _id: 0});
+
+db.products.find({}, {stock: 0});
+
+db.products.find({brand: "Sony"});
+
+db.products.find({price: {$gt: 500}});
+
+db.products.find({price: {$gte: 500, $lte: 1000}});
+
+db.products.find({$or: [{brand: "Apple"}, {brand: "Sony"}]});
+
+db.products.find({$and: [{price: {$gte: 600}}, {stock: {$lte: 50}}]});
+
+db.products.find().sort({price: 1});
+
+db.products.find().sort({price: 0});
+
+
+
+db.products.find().limit(3);
+
+db.products.find().skip(2);
+db.products.find().skip(1).limit(2);
+
+db.products.countDocuments();
+
+db.products.countDocuments({price: {$gte: 500}});
+
+
+
+db.products.find({name: {$regex: /^S/}});
+
+db.products.find({brand: {$regex: /lg/i}});
+
+
+db.products.drop();
+
+
+Delete:
+
+db.products.insertMany([
+  { name: "Laptop", brand: "Dell", price: 800, stock: 50 },
+  { name: "Smartphone", brand: "Apple", price: 1000, stock: 30 },
+  { name: "TV", brand: "Samsung", price: 600, stock: 20 },
+  { name: "Headphones", brand: "Sony", price: 200, stock: 100 },
+  { name: "Refrigerator", brand: "LG", price: 1200, stock: 10 }
+]);
+
+db.products.find();
+
+
+
+db.products.deleteOne({brand: "Apple"});
+
+db.products.deleteMany({price: {$lt: 500}});
+
+db.products.deleteMany({});
+
+db.products.deleteMany({$or: [{brand: "Sony"}, {stock: {$lt: 20}}]});
+
+db.products.deleteMany($and: [{price: {$gt: 500}}, {stock: {$lt: 50}}]);
+
+db.products.deleteMany({name: {$regex: /^L/}});
+
+db.products.find();
+
+
+
+working with arrays and objects
+------------------------------
+show collections;
+
+use schoolDB;
+
+db.students.insertMany([
+  {
+    name: "Rahul Verma",
+    age: 20,
+    subjects: ["Math", "Physics", "Chemistry"],
+    address: { city: "Jaipur", state: "Rajasthan" }
+  },
+  {
+    name: "Anjali Singh",
+    age: 22,
+    subjects: ["Biology", "Chemistry", "English"],
+    address: { city: "Lucknow", state: "Uttar Pradesh" }
+  },
+  {
+    name: "Aman Khan",
+    age: 19,
+    subjects: ["Computer Science", "Math", "English"],
+    address: { city: "Bhopal", state: "Madhya Pradesh" }
+  }
+]);
+
+db.students.insertOne({name: "Priya Sharma", age: 21, subjects: ["History, Economics"], address: {city: "Delhi", state: "Delhi"}});
+
+db.students.updateOne({name: "Rahul Verma"}, {$push: {subjects: "Geography"}});
+
+db.students.updateOne({name: "Anjali Singh"}, {$push: {subjects: {$each: ["Psycology", "Sociology"]}}});
+
+db.students.find({"address.state": "Rajasthan"});
+
+db.students.find({age: {$gt: 20}});
+
+db.students.find({subjects: "Math"});
+
+db.students.find({"address.city": "Lucknow"}, {name: 1, subjects: 1, _id: 0});
+
+db.students.updateOne({name: "Aman Khan"}, {$set: {age: 20}});
+
+db.students.updateOne({name: "Priya Sharma"}, {$set: {"address.city": "New Delhi"}});
+
+db.students.updateOne({name: "Aman Khan"}, {$pull: {subjects: "English"}});
+
+db.students.deleteOne({name: "Priya Sharma"});
+
+db.students.updateMany({}, {$unset: {"address.state": ""}});
+
+
+
+
+indexing
+----------
+show collections;
+use sampledb;
+db.users.find();
+
+db.users.createIndex({name: 1});
+
+db.users.getIndexes();
+
+db.users.dropIndex({name: 1});
+
+db.users.dropIndexes();
+
+db.users.createIndex({age: 1});
+
+
+
+
+
+
+mongodump
+mongodump --out backupData
+mongodump -d sampledb --out sampledbfold
+
+mongorestore
+mongorestore sampledbfold
+
+mongodump -d sampledb -c users --out userColl
+mongorestore --nsInclude sampledb.users userColl
+
+
+
+mongoexport --db sampledb --collection users --out data.json
+
+mongoimport --db sampledb --collection users --file data.json
+
+
+
+
+
+
+

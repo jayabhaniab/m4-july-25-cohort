@@ -50,3 +50,434 @@ SET SQL_SAFE_UPDATES = 0;
 
 
 
+
+
+
+clauses
+-----------------
+distinct
+where
+oder by
+limit
+offset
+
+aggregate functions
+-------------------------
+min
+max
+count
+avg
+
+group by
+----------------
+
+sales_table
+
+region      sales
+------      -----
+A            200
+B            400
+C            300
+B            700
+C            500
+A            600
+
+A   =>  ?
+B   =>  ?
+C   =>  ?
+
+
+
+
+
+
+Database Design and Normalization
+------------------------------------------------
+
+db lifecycle
+------------
+4 phases
+    1. requirement gathering
+    2. logical deign
+    3. physical design
+    4. actual implimentation on DBMS
+    5. maintainance
+
+
+
+Normalization
+-------------
+- organizing data into multiple related tables, to reduce/minimize data redundancy.
+
+- If I don't minimize redundancy, what happens?
+    1. increases size of db
+    2. insertion problem
+    3. deletion problem
+    4. updation problem
+
+students
+--------
+roll_no     name    age     branch      hod     branch_cno
+-------     ----    ---     ------      ---     ----------
+101         A       18      CSE         Prof X  67899
+102         B       19      CSE         Prof X  67899
+103         C       17      CSE         Prof X  12345
+104         D       20      CSE         Prof X  67899
+105         E       20      CSE         Prof X  67899
+106         F       32      CSE         Prof X  67899
+
+insertion
+updation
+deletion
+
+students
+-------
+roll_no     name      age       branch
+101         A         25        CSE
+102         B         20        CSE
+
+
+barnch
+------
+branch      hod      branch_cno
+CSE         Prof X   67899     
+
+
+
+Normal Forms
+------------
+1NF
+2NF
+3NF
+BCNF
+4NF
+5NF
+
+1NF
+--------------
+1. each column should contain atomic values
+2. column should have values of same type
+3. each column should have unique names
+
+students
+---------
+roll_no     name    age     branch
+1           A       18      CSE, IT
+2           B       19      CSE, Civil
+3           C       32      CSE
+
+
+roll_no     name    age     branch
+1           A       18      CSE
+1           A       18      IT
+2           B       19      CSE
+2           B       19      Civil
+3           C       32      CSE
+
+
+
+2NF
+-----------
+1. should be in 1NF
+2. should not have partial dependency
+
+
+what is dependency?
+-------------------
+
+students
+student_id(pk)      name    roll_no
+
+prime attribute     ->      non-prime attribute
+
+
+partial dependency
+-----------------
+students
+s_id    name    age     branch      place
+
+subject
+subject_id      subject_name
+
+marks
+s_id    subject_id      marks      professor
+
+s_id + subject_id (pk)
+
+part of prime attr      ->      non-prime attr
+
+
+solution:
+    1. move prof. column to subject table
+    2. create another table for professor (good approach)
+
+professor
+---------
+prof_id     prof_name
+
+
+
+3NF
+-----
+1. it should be in 2NF
+2. it should not have transitive dependency
+
+marks
+-----
+s_id    subject_id      marks   test_name   max_marks
+
+s_id + subject_id (pk)
+
+non-prime attr  ->  non-prime attr
+
+test
+-----
+test_name   max_marks
+
+
+
+
+key points
+----------------------
+1. dependency 
+    prime attr -> non-prime attr
+2. partial dependency
+    part of prime attr -> non-prime attr
+3. transitive dependency
+    non-prime attr -> non-prime attr
+
+
+
+
+Transactions
+
+ER Diagrams
+
+
+
+Transactions
+---------------------
+- sequence of operations
+- performed as a single unit of work
+- must be either fully completed or fully aborted
+
+500         500
+Nitin  ->  Neha
+debited     has to be credited here
+
+100 rs
+
+single unit
+1) debit from Nitin's acc
+2) credit to Neha's acc
+
+
+
+Transactions must follow ACID properties:
+A - Atomicity
+    all or nothing
+
+C - Consistency
+    ensures database rules and constraints are maintained
+
+I - Isolation 
+    ensures concurrent transactions do not affect each other
+
+Account - A  => 100 rs
+user 1 - debit  100 rs from acc A
+user 2 - debit  50 rs from acc A
+
+movie ticket
+travel ticket
+
+ecommerce
+    A       B       tshirt
+
+D - Durability
+    ensures commited transactions are permeneant
+
+
+
+
+Transaction Control Language (TCL)
+1. start transaction
+    begins a new transaction
+
+2. commit
+    saves all changes made to the db
+
+3. rollback
+    discards all changes made in the transaction
+
+4. savepoint
+    sets a point within a transaction that you can rollback to
+
+5. rollback to savepoint
+    reverts changes made after a specific savepoint
+
+
+
+ER Diagrams
+---------------------
+- relationship among entities
+    entity = table
+
+entity - student, account, employee
+
+students        -> entity type
+--------
+    A           -> entity
+    B
+    C
+
+ABC -> entity set
+
+
+
+relationship
+-----------------------
+association between two or more entities
+
+student learn course
+customer deposit into account
+customer buy products
+
+attributes
+----------
+column name
+
+entity
+-------
+strong
+    can be uniquely identified
+
+weak
+    can't be uniquely identifies, depends on some other strong entity
+
+company
+-------
+    employees    has   dependants
+    strong              weak
+
+Bank
+----
+Customers   has     loan
+strong              weak
+
+
+Attributes
+----------
+1. simple
+- can't be divided further
+
+2. composite
+- can be divided into subparts
+
+3. single-valued
+- only one value attribute
+
+4. multi-valued
+- having more than one value
+
+5. derived
+- value derived from other attribute
+
+6. null value
+- not applicable
+- unknown
+
+
+Relationships
+--------------
+Cardinality
+
+1. one to one (1-1)
+student has roll_no
+
+2. one to many (1-n)
+person has email
+
+3. many to one (n-1)
+subject taken by teacher
+maths taken by ravi
+
+4. many to many (n-m)
+customer buys product
+
+
+
+
+
+additional topics - MariaDB
+--------------------------------------
+drop vs delete vs truncate
+
+alter vs update
+
+operators
+
+
+
+DDL -> create, drop, alter, truncate 
+DML -> insert, update, delete
+TCL -> commit, rollback, savepoint
+
+
+drop vs delete vs truncate
+--------------------------
+truncate table employees;
+
+
+drop :
+    DDL
+    delete table and database
+
+delete : 
+    DML
+    delete records
+    auto_increment => 6
+    rollback - possible
+
+trucate :
+    DDL
+    delete all records
+    auto_increment => 1
+    rollback - not possible in most cases
+
+
+
+
+alter vs update
+---------------
+alter :
+    DDL
+    to modify table structure
+
+update :
+    DML
+    to modify records
+
+
+
+
+operators
+-----------------------
+1. arithmetic   +, -, *, /, %
+2. comparison   =, !=, <, >, <=, >=
+3. logical      AND, OR, NOT
+4. bitwise
+5. assignment
+6. unary
+7. set
+8. special operators
+    like    not like
+    between not between
+    in      not in
+
+like
+----
+searching for a specifies pattern
+
+wildcard characters:
+    % - zero, one or multiple characters
+    _ - a single character

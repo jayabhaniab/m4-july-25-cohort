@@ -1,0 +1,177 @@
+NodeJS
+---------------------
+web service
+-----------
+SOAP
+REST
+XML
+Not lightweight
+Not open source
+
+web api
+-------
+genaral way of communicating for apps
+REST, GraphQL
+XML, JSON
+lightweight
+often open source
+
+
+
+Types of APIs
+-------------
+restful
+websocket apis
+graphql
+soap
+
+
+SOAP
+----
+Simple Object Access Protocol
+- formal letter-writing system
+- strict rules - sender and receiver
+- HTTP or SMTP
+- wrap in SOAP envelope
+
+<soap:evnelope>
+    <soap:body>
+        <transferfunds>
+            <fa>123</fa>
+            <ta>456</ta>
+            <amt>500</amt>
+        </transferfunds>
+    </soap:body>
+</soap:evnelope>
+
+response:
+<soap:envelope>
+    body
+    status - success
+</soap:envelope>
+
+
+
+websocket
+---------
+- a protocol for real-time communication
+- two-way communication
+- connection open
+
+
+
+REST
+-----
+- interact with data
+- get, post, put, delete
+- query params
+
+
+
+GraphQL
+-------
+- one endpoint
+/graphql
+
+{
+    products {
+        name
+    }
+}
+
+
+{
+    pdoduct (id:1) {
+        name
+        price
+        reviews {
+            user
+            comment
+        }
+    }
+}
+
+
+when to use what?
+REST - straight forward data needs
+    (blog, todo-app)
+
+GraphQL - minumum number of request
+          fetch many related types of data
+        (e-commerce, social media)
+
+
+REST - simplicity
+GraphQL - flexibility
+
+
+
+REST
+-----------------
+Representational State Transfer
+
+communication 
+
+http methods
+
+JSON
+
+https://api.example.com/products - GET
+
+
+
+HTTP Methods / Verbs
+-----------------------
+1. GET          Read        /products
+2. POST         Create      /product
+3. PUT          Update      /products/1         replace
+4. Patch        Update      /products/1         specific field
+5. Delete       Delete      /prodcts/1
+
+
+
+Status Codes
+------------
+200 - success
+201 - created
+204 - no content
+400 - bad request
+404 - not found
+500 - internal server error
+
+
+
+API Testing
+-----------------
+- ensure that API works as expected
+
+
+Types of API Testing
+--------------------
+1. unit testing (developers)
+2. integration testing
+3. load testing
+4. functional testing
+5. security testing
+6. error handling testing
+7. regression testing
+
+
+How we perform API testing
+--------------------------
+1. understand requirements
+2. create test cases
+    valid request -> expected result
+3. send request
+4. validate response
+5. automate
+
+
+Tools
+-----
+1. postman (great for begineers)
+2. swagger (api documentation)
+3. soapui (soap & rest api)
+4. Insomnia (debugging, testing)
+5. jmeter (load testing - performance)
+6. rest assured (java based - automation)
